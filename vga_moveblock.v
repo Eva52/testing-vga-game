@@ -13,6 +13,8 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 	wire			[9:0]		vga_yide;
 	wire						key_flag1;
 	wire						key_flag2;
+	wire						key_flag3;
+	wire						key_flag4;
 	wire			[10:0]	addr;
 	wire			[7:0]		q;
         wire [7:0] vga_rgb;
@@ -22,7 +24,7 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 		  assign VGA_B={8{vga_rgb[6]}};
         
 	vga_pll my_pll_inst(
-			.rst(~KEY[0]),
+			.rst(~SW[0]),
 			.refclk(CLOCK_50),
 			.outclk_0(VGA_CLK),
 			.locked(locked)
@@ -31,7 +33,7 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 	key_filter key_filter1_inst(
 			.clk(CLOCK_50),
 			.rst_n(locked),
-			.key_in(KEY[1]),
+			.key_in(KEY[0]),
 			
 			.nege_flag(key_flag1)
 	);
@@ -39,11 +41,26 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 	key_filter key_filter2_inst(
 			.clk(CLOCK_50),
 			.rst_n(locked),
-			.key_in(KEY[2]),
+			.key_in(KEY[1]),
 			
 			.nege_flag(key_flag2)
 	);
 	
+	key_filter key_filter1_inst(
+			.clk(CLOCK_50),
+			.rst_n(locked),
+			.key_in(KEY[2]),
+			
+			.nege_flag(key_flag3)
+	);
+
+	key_filter key_filter1_inst(
+			.clk(CLOCK_50),
+			.rst_n(locked),
+			.key_in(KEY[3]),
+			
+			.nege_flag(key_flag4)
+	);
 
 	vga_ctrl vga_ctrl_inst(
 			.clk_40mhz(VGA_CLK),

@@ -79,6 +79,8 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 			.rst_n(locked),
 			.key_flag1(key_flag1),
 			.key_flag2(key_flag2),
+			.key_flag3(key_flag3),
+			.key_flag4(key_flag4),
 			.vga_xide(vga_xide),
 			.vga_yide(vga_yide),
 			

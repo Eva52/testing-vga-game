@@ -21,10 +21,10 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
         assign VGA_G={8{vga_rgb[3]}};
 		  assign VGA_B={8{vga_rgb[6]}};
         
-	my_pll my_pll_inst(
-			.areset(~KEY[0]),
-			.inclk0(CLOCK_50),
-			.c0(VGA_CLK),
+	vga_pll my_pll_inst(
+			.rst(~KEY[0]),
+			.refclk(CLOCK_50),
+			.outclk_0(VGA_CLK),
 			.locked(locked)
 	);
 	
@@ -33,8 +33,6 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 			.rst_n(locked),
 			.key_in(KEY[1]),
 			
-//			.key_out(key_flag1)
-			.pose_flag(),
 			.nege_flag(key_flag1)
 	);
 	
@@ -43,8 +41,6 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 			.rst_n(locked),
 			.key_in(KEY[2]),
 			
-//			.key_out(key_flag2)
-			.pose_flag(),
 			.nege_flag(key_flag2)
 	);
 	

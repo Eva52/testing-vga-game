@@ -83,7 +83,7 @@ module move_logic_ctrl(
 				else								
 					x_direct <= x_direct;	
 					
-				if(vga_y == side - 1'd1)	
+				if(vga_y == 1'd0)	
 					y_direct <= 1'b1;			
 				else	if((vga_y == (y - 10'd40)) && (vga_x >= x - 10'd40) && (vga_x < (x + 10'd140)))
 					y_direct <= 1'b0;
@@ -142,8 +142,7 @@ module move_logic_ctrl(
 	always @ (*) begin
 		if(rst_n == 1'b0)
 			vga_data <= BLACK;
-		else if((vga_xide < side - 1'd1 || vga_xide >= vga_xdis - side - 1'd1)			
-				|| (vga_yide < side - 1'd1))
+		else if((vga_xide < side - 1'd1 || vga_xide >= vga_xdis - side - 1'd1))
 			vga_data <= BLUE;
 		else if((vga_xide > vga_x && vga_xide <= vga_x + block) && (vga_yide > vga_y && vga_yide <= vga_y + block))
 			vga_data <= BLACK;

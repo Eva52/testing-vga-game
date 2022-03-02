@@ -12,8 +12,22 @@ module move_logic_ctrl(
 	);
 	
 	reg				[31:0]cnt;
+	reg	[9:0]			x;					
+	parameter			y = 579;
+	reg[9:0]          x2;
+	parameter         y2 = 19;			
+	reg	[9:0]			vga_x;			
+	reg	[9:0]			vga_y;			
+	reg					x_direct;		
+	reg					y_direct;
+	wire	         	move_en;
 	
 	parameter				T_10ms = 500_000;
+	parameter	side = 40;				
+	parameter	block = 40;			
+	parameter	stick = 100;        
+	parameter	vga_xdis = 800;		
+	parameter	vga_ydis = 600;	
 	
 	always @ (posedge clk, negedge rst_n) begin
 		if(rst_n == 1'b0)
@@ -23,30 +37,15 @@ module move_logic_ctrl(
 		else
 			cnt <= 32'd0;
 	end
-
-	wire		move_en;
 	
-	assign move_en = (cnt == T_10ms - 1) ? 1'b1 : 1'b0; 
-	
-	reg	[9:0]			x;					
-	parameter			y = 579;
-	reg[9:0]            x2;
-	parameter           y2 = 19;			
-	reg	[9:0]			vga_x;			
-	reg	[9:0]			vga_y;			
-	reg					x_direct;		
-	reg					y_direct;		
-	
-	
-	
+	assign move_en = (cnt == T_10ms - 1) ? 1'b1 : 1'b0; 		
 	
 	always @ (posedge clk, negedge rst_n) begin
 		if(rst_n == 1'b0)begin
 			vga_x <= 10'd100;
 			vga_y <= 10'd100;
 		end
-		else if(move_en == 1'b1)
-			begin
+		else if(move_en == 1'b1)begin
 				if(x_direct == 1'b0)
 					vga_x <= vga_x - 10'd1;
 				else 
@@ -55,19 +54,9 @@ module move_logic_ctrl(
 					vga_y <= vga_y - 10'd1;
 				else 
 					vga_y <= vga_y + 10'd1;
-			end
-		else begin
-			vga_x <= vga_x;
-			vga_y <= vga_y;
 		end
 	end 
-	
-	
-	parameter	side = 40;				
-	parameter	block = 40;			
-	parameter	stick = 100;        
-	parameter	vga_xdis = 800;		
-	parameter	vga_ydis = 600;		
+		
 	
 	always @ (posedge clk, negedge rst_n) begin
 		if(rst_n == 1'b0)begin
@@ -79,9 +68,7 @@ module move_logic_ctrl(
 				if(vga_x == side - 1'd1)	
 					x_direct <= 1'b1;			
 				else	if(vga_x == vga_xdis - side - block - 1'd1)	
-					x_direct <= 1'b0;			
-				else								
-					x_direct <= x_direct;	
+					x_direct <= 1'b0;				
 					
 				if(vga_y == 10'd599)	
 					y_direct <= 1'd1;		
@@ -89,8 +76,6 @@ module move_logic_ctrl(
 					y_direct <= 1'b0;
 				else	if((vga_y == y2) && (vga_x >= x2 - 10'd40) && (vga_x < (x2 + 10'd140)))
 					y_direct <= 1'b1;		
-				else								
-					y_direct <= y_direct;	
 			end
 	end
 	
@@ -110,9 +95,7 @@ module move_logic_ctrl(
 					x <= x - 10'd20;
 				else
 					x <= vga_xdis - side - 1'd1;
-				end
-		else
-			x <= x;		
+				end		
 	end
 
 	always @ (posedge clk, negedge rst_n)begin
@@ -129,12 +112,10 @@ module move_logic_ctrl(
 					x2 <= x2 - 10'd20;
 				else
 					x2 <= vga_xdis - side - 1'd1;
-				end
-		else
-			x2 <= x2;		
+				end		
 	end
 	
-	parameter	BLUE  = 8'b000_000_11;
+	parameter	RED  = 8'b000_000_11;
 	parameter	BLACK = 8'h111_000_00;				
 	parameter	WHITE = 8'hff;				
 	parameter	GREEN = 8'b000_111_00; 
@@ -143,7 +124,7 @@ module move_logic_ctrl(
 		if(rst_n == 1'b0)
 			vga_data <= BLACK;
 		else if((vga_xide < side - 1'd1 || vga_xide >= vga_xdis - side - 1'd1))
-			vga_data <= BLUE;
+			vga_data <= RED;
 		else if((vga_xide > vga_x && vga_xide <= vga_x + block) && (vga_yide > vga_y && vga_yide <= vga_y + block))
 			vga_data <= BLACK;
 		else if((vga_xide > x && vga_xide <= x + stick) && vga_yide > y)

@@ -83,12 +83,12 @@ module move_logic_ctrl(
 				else								
 					x_direct <= x_direct;	
 					
-				if(vga_y == 1'd0)	
-					y_direct <= 1'b1;			
+				if(vga_y == 10'd599)	
+					y_direct <= 1'd1;		
 				else	if((vga_y == (y - 10'd40)) && (vga_x >= x - 10'd40) && (vga_x < (x + 10'd140)))
 					y_direct <= 1'b0;
-				else	if((vga_y == (y2 + 10'd40)) && (vga_x >= x2 - 10'd40) && (vga_x < (x2 + 10'd140)))
-					y_direct <= 1'b0;		
+				else	if((vga_y == y2) && (vga_x >= x2 - 10'd40) && (vga_x < (x2 + 10'd140)))
+					y_direct <= 1'b1;		
 				else								
 					y_direct <= y_direct;	
 			end

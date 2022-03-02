@@ -3,25 +3,21 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
              output [6:0] HEX0, output [6:0] HEX1, output [6:0] HEX2,
              output [6:0] HEX3, output [6:0] HEX4, output [6:0] HEX5,
              output [7:0] VGA_R, output [7:0] VGA_G, output [7:0] VGA_B,
-             output VGA_HS, output VGA_VS, output VGA_CLK,
-             output [7:0] VGA_X, output [6:0] VGA_Y,
-             output [2:0] VGA_COLOUR, output VGA_PLOT);
+             output VGA_HS, output VGA_VS, output VGA_CLK);
 	
 	wire						locked;
-	wire			[7:0]		vga_data;
+	wire			[23:0]		vga_data;
 	wire			[9:0]		vga_xide;
 	wire			[9:0]		vga_yide;
 	wire						key_flag1;
 	wire						key_flag2;
 	wire						key_flag3;
 	wire						key_flag4;
-	wire			[10:0]	addr;
-	wire			[7:0]		q;
-        wire [7:0] vga_rgb;
+        wire [23:0] vga_rgb;
 
-        assign VGA_R={8{vga_rgb[0]}};
-        assign VGA_G={8{vga_rgb[3]}};
-		  assign VGA_B={8{vga_rgb[6]}};
+        assign VGA_R=vga_rgb[7:0];
+        assign VGA_G=vga_rgb[15:8];
+		  assign VGA_B=vga_rgb[23:16];
         
 	vga_pll my_pll_inst(
 			.rst(SW[0]),

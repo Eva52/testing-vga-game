@@ -18,10 +18,8 @@ module key_filter(
 
 	parameter			T_10ms = 500_000;
 	
-	parameter  	s0 = 4'b0001;
-	parameter  	s1 = 4'b0010;
-	parameter  	s2 = 4'b0100;
-	parameter  	s3 = 4'b1000;
+	parameter  	s0 = 1'b1;
+	parameter  	s1 = 1'b0;
 
 
 	always @ (posedge clk, negedge rst_n)begin

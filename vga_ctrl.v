@@ -1,13 +1,13 @@
 module vga_ctrl(
 	input							clk_40mhz,
 	input							rst_n,
-	input					[7:0]	vga_data,
+	input					[23:0]	vga_data,
 	
 	output				[9:0]	vga_xide,
 	output				[9:0]	vga_yide,
 	output				vga_hs,
 	output				vga_vs,
-	output				[7:0]	vga_rgb
+	output				[23:0]	vga_rgb
 	);
 
 	//128+88+800+40=1056
@@ -55,6 +55,6 @@ module vga_ctrl(
 	
 	assign vga_yide = (valid == 1'b1) ? (cnt2 - 11'd27) : 10'd0; 
 	
-	assign vga_rgb = (cnt1 >= 11'd216 && cnt1 < 11'd1016) && (cnt2 >= 10'd27 && cnt2 < 10'd627) ? vga_data : 8'h0; 
+	assign vga_rgb = (cnt1 >= 11'd216 && cnt1 < 11'd1016) && (cnt2 >= 10'd27 && cnt2 < 10'd627) ? vga_data : 24'd0; 
 
 endmodule

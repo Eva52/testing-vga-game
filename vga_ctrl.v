@@ -45,16 +45,16 @@ module vga_ctrl(
 	always @ (*)	begin
 		if(rst_n == 1'b0)
 			valid = 1'b0;
-		else	if((cnt1 >= 11'd215 && cnt1 < 11'd1015) && (cnt2 >= 10'd27 && cnt2 < 10'd627))
+		else	if((cnt1 >= 11'd215 && cnt1 < 11'd1015) && (cnt2 >= 10'd26 && cnt2 < 10'd627))
 			valid = 1'b1;					
 		else
 			valid = 1'b0;					
 	end
 	
-	assign vga_xide = (valid == 1'b1) ? (cnt1 - 11'd216) : 10'd0; 
+	assign vga_xide = (valid == 1'b1) ? (cnt1 - 11'd215) : 10'd0; 
 	
-	assign vga_yide = (valid == 1'b1) ? (cnt2 - 11'd27) : 10'd0; 
+	assign vga_yide = (valid == 1'b1) ? (cnt2 - 11'd26) : 10'd0; 
 	
-	assign vga_rgb = (cnt1 >= 11'd216 && cnt1 < 11'd1016) && (cnt2 >= 10'd27 && cnt2 < 10'd627) ? vga_data : 24'd0; 
+	assign vga_rgb = (valid == 1'b1) ? vga_data : 24'd0; 
 
 endmodule

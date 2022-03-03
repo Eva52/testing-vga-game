@@ -13,7 +13,11 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 	wire						key_flag2;
 	wire						key_flag3;
 	wire						key_flag4;
-        wire [23:0] vga_rgb;
+   wire [23:0] vga_rgb;
+	wire	[9:0]			x;					
+	wire  [9:0]       x2;
+	wire	[9:0]			vga_x;			
+	wire	[9:0]			vga_y;
 
         assign VGA_R=vga_rgb[7:0];
         assign VGA_G=vga_rgb[15:8];
@@ -70,17 +74,35 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 			.vga_rgb(vga_rgb)
 	);
 	
-	move_logic_ctrl move_logic_ctrl_inst(
+	player_logic player_logic_inst(
 			.clk(CLOCK_50),
 			.rst_n(locked),
 			.key_flag1(key_flag1),
 			.key_flag2(key_flag2),
 			.key_flag3(key_flag3),
 			.key_flag4(key_flag4),
-			.vga_xide(vga_xide),
-			.vga_yide(vga_yide),
 			
+			.x(x),
+			.x2(x2)
+	);
+	square_logic square_logic_inst(
+         .clk(CLOCK_50),
+			.rst_n(locked),
+			.x(x),
+			.x2(x2),
+	
+	      .vga_x(vga_x),
+			.vga_y(vga_y)
+	);
+	render_logic render_logic_inst(
+	      .rst_n(locked),
+	      .x(x),
+			.x2(x2),
+			.vga_x(vga_x),
+			.vga_y(vga_y),	
+	      .vga_xide(vga_xide),
+			.vga_yide(vga_yide),
 			.vga_data(vga_data)
 	);
-	
+
 endmodule

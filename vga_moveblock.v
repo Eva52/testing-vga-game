@@ -19,6 +19,8 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 	wire  [9:0]       x2;
 	wire	[9:0]			vga_x;			
 	wire	[9:0]			vga_y;
+	wire	[9:0]			vga_x2;			
+	wire	[9:0]			vga_y2;
 
         assign VGA_R=vga_rgb[7:0];
         assign VGA_G=vga_rgb[15:8];
@@ -103,20 +105,25 @@ module vga_moveblock (input CLOCK_50, input [3:0] KEY,
 			.x2(x2)
 	);
 	square_logic square_logic_inst(
-         .clk(CLOCK_50),
+         .clk(VGA_CLK),
 			.rst_n(locked),
 			.x(x),
 			.x2(x2),
 	
 	      .vga_x(vga_x),
-			.vga_y(vga_y)
+			.vga_y(vga_y),
+			.vga_x2(vga_x2),
+			.vga_y2(vga_y2)
 	);
 	render_logic render_logic_inst(
 	      .rst_n(locked),
+			.clk(VGA_CLK),
 	      .x(x),
 			.x2(x2),
 			.vga_x(vga_x),
 			.vga_y(vga_y),	
+			.vga_x2(vga_x2),
+			.vga_y2(vga_y2),
 	      .vga_xide(vga_xide),
 			.vga_yide(vga_yide),
 			.vga_data(vga_data)

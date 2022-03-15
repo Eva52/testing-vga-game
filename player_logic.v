@@ -13,11 +13,11 @@ module player_logic(
 	
 	parameter	side = 40;				
 	parameter	block = 40;			
-	parameter	stick = 100;        
+	parameter	stick = 75;        
 	parameter	vga_xdis = 800;		
 	parameter	vga_ydis = 600;	
-	parameter	y = 579;
-	parameter   y2 = 21;	
+	parameter	y = 462;
+	parameter   y2 = 136;	
 	
 	always @ (posedge clk, negedge rst_n)begin
 		if(rst_n == 1'b0)
